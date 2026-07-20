@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, lazyRouteComponent, useNavigate } from "@tanstack/react-router";
 import { useStore, type Role } from "@/lib/store";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,13 +9,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ArrowRight, Trash2, Copy, Wand2 } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
-import { typeLabel } from "./dashboard";
+import { typeLabel } from "./dashboard-content";
 
 export const Route = createFileRoute("/_authenticated/projects/$id")({
-  component: ProjectDetail,
+  component: lazyRouteComponent(() => import('./projects.$id').then((m) => ({ default: m.default })), 'default'),
 });
 
-function ProjectDetail() {
+export default function ProjectDetail() {
   const { id } = Route.useParams();
   const project = useStore((s) => s.projects.find((p) => p.id === id));
   const update = useStore((s) => s.updateProject);

@@ -151,26 +151,32 @@ export function isImageFile(filename: string): boolean {
 }
 
 // معالجة الكائنات
-export function deepMerge<T extends Record<string, any>>(target: T, source: Partial<T>): T {
-  const output = Object.assign({}, target);
+export function deepMerge<T extends Record<string, unknown>>(target: T, source: Partial<T>): T {
+  const output: Record<string, unknown> = { ...target };
   if (isObject(target) && isObject(source)) {
     Object.keys(source).forEach((key) => {
-      if (isObject(source[key])) {
+      const sourceValue = source[key as keyof T];
+      const targetValue = target[key as keyof T];
+
+      if (isObject(sourceValue)) {
         if (!(key in target)) {
-          Object.assign(output, { [key]: source[key] });
+          output[key] = sourceValue;
         } else {
-          output[key] = deepMerge(target[key], source[key]);
+          output[key] = deepMerge(
+            (targetValue as Record<string, unknown>) ?? {},
+            (sourceValue as Record<string, unknown>) ?? {},
+          );
         }
       } else {
-        Object.assign(output, { [key]: source[key] });
+        output[key] = sourceValue;
       }
     });
   }
-  return output;
+  return output as T;
 }
 
-function isObject(item: unknown): item is Record<string, any> {
-  return item && typeof item === "object" && !Array.isArray(item);
+function isObject(item: unknown): item is Record<string, unknown> {
+  return typeof item === "object" && item !== null && !Array.isArray(item);
 }
 
 export function removeUndefined<T extends Record<string, any>>(obj: T): T {

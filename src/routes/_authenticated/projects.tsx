@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, lazyRouteComponent } from "@tanstack/react-router";
 import { useState } from "react";
 import { useStore } from "@/lib/store";
 import { Card, CardContent } from "@/components/ui/card";
@@ -8,16 +8,16 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { MoreVertical, Copy, Trash2, RotateCcw, Boxes } from "lucide-react";
-import { NewProjectDialog, typeLabel } from "./dashboard";
+import { NewProjectDialog, typeLabel } from "./dashboard-content";
 import { formatDistanceToNow } from "date-fns";
 import { ar } from "date-fns/locale";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 
 export const Route = createFileRoute("/_authenticated/projects")({
-  component: ProjectsPage,
+  component: lazyRouteComponent(() => import('./projects').then((m) => ({ default: m.default })), 'default'),
 });
 
-function ProjectsPage() {
+export default function ProjectsPage() {
   const all = useStore((s) => s.projects);
   const [q, setQ] = useState("");
   const active = all.filter((p) => !p.deletedAt && p.name.includes(q));

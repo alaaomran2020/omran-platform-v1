@@ -136,14 +136,15 @@ export function validate<T>(schema: z.ZodSchema, data: unknown): { ok: true; dat
   }
 }
 
-export function validateAsync<T>(schema: z.ZodSchema, data: unknown): Promise<{ ok: true; data: T } | { ok: false; error: string }> {
-  return schema.parseAsync(data)
-    .then((validated) => ({ ok: true, data: validated as T }))
-    .catch((err) => {
-      if (err instanceof z.ZodError) {
-        const firstError = err.errors[0];
-        return { ok: false, error: firstError.message };
-      }
-      return { ok: false, error: "فشل التحقق من البيانات" };
-    });
+export async function validateAsync<T>(schema: z.ZodSchema, data: unknown): Promise<{ ok: true; data: T } | { ok: false; error: string }> {
+  try {
+    const validated = await schema.parseAsync(data);
+    return { ok: true, data: validated as T };
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      const firstError = err.errors[0];
+      return { ok: false, error: firstError.message };
+    }
+    return { ok: false, error: "فشل التحقق من البيانات" };
+  }
 }
