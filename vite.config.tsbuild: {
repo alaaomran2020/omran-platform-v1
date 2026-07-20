@@ -1,0 +1,69 @@
+// vite.config.ts
+
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
+
+export default defineConfig({
+  plugins: [
+    react(),
+  ],
+
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+
+  server: {
+    host: "0.0.0.0",
+    port: 8080,
+    strictPort: true,
+  },
+
+  preview: {
+    host: "0.0.0.0",
+    port: 4173,
+  },
+
+  build: {
+    outDir: "dist",
+    sourcemap: false,
+  },
+});
+import { defineConfig } from "@vitejs/vite-tanstack-config";
+
+export default defineConfig({
+  // هنا نمرر إعدادات Vite الإضافية لتحديد مسار GitHub Pages
+  vite: {
+    base: '/omran-platform-v1/',
+  },
+  tanstackStart: {
+
+
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
+
+export default defineConfig({
+  plugins: [
+    react(),
+  ],
+
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+
+  server: {
+    host: "0.0.0.0",
+    port: 8080,
+    strictPort:ew: {
+    host: "0.0.0.0",
+    port: 4173,
+  },
+
+  build: {
+pnpm dev    outDir: "dist",
+    sou

@@ -1,12 +1,6 @@
-import { defineConfig } from "@vitejs/vite-tanstack-config";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
 export default defineConfig({
-  // هنا نمرر إعدادات Vite الإضافية لتحديد مسار GitHub Pages
-  vite: {
-    base: '/omran-platform-v1/',
-  },
-  tanstackStart: {
-    // إعداد السيرفر الأصلي للمشروع
-    server: { entry: "server" },
-  },
+  plugins: [react()],
 });
